@@ -1,11 +1,9 @@
-from datacenter.models import Passcard
 from datacenter.models import Visit
 from django.shortcuts import render
 from django.utils import timezone
 
 
 def storage_information_view(request):
-    # Программируем здесь
 
     non_closed_visits = []
     passcards = Visit.objects.all()
@@ -24,6 +22,6 @@ def storage_information_view(request):
             )
             count += 1
     context = {
-        'non_closed_visits': non_closed_visits,  # не закрытые посещения
+        'non_closed_visits': non_closed_visits,
     }
     return render(request, 'storage_information.html', context)

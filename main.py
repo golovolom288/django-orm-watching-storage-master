@@ -4,7 +4,6 @@ from django.core.management import execute_from_command_line
 
 import django
 
-from django.db import models
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
 django.setup()
