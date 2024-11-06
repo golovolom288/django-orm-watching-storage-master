@@ -9,47 +9,17 @@ def passcard_info_view(request, passcode):
     ]
     passcard = get_object_or_404(Passcard, passcode=passcode)
     visits = Visit.objects.filter(passcard=passcard)
-    now = timezone.localtime()
     for visit in visits:
         enter = timezone.localtime(visit.entered_at)
-        if visit.leaved_at is None:
-            enter = timezone.localtime(visit.entered_at)
-            delta = now - enter
-            if delta.total_seconds() / 60 < 60:
-                this_passcard_visits.append(
-                    {
-                        'entered_at': enter,
-                        'duration': delta,
-                        'is_strange': False
-                    }
-                )
-            else:
-                this_passcard_visits.append(
-                    {
-                        'entered_at': enter,
-                        'duration': delta,
-                        'is_strange': True
-                    }
-                )
-        else:
-            leave = timezone.localtime(visit.leaved_at)
-            delta = leave - enter
-            if delta.total_seconds() / 60 < 60:
-                this_passcard_visits.append(
-                    {
-                        'entered_at': enter,
-                        'duration': delta,
-                        'is_strange': False
-                    }
-                )
-            else:
-                this_passcard_visits.append(
-                    {
-                        'entered_at': enter,
-                        'duration': delta,
-                        'is_strange': True
-                    }
-                )
+        duration = visit.format_duration()
+        is_strange = visit.get_is_strange()
+        this_passcard_visits.append(
+            {
+                'entered_at': enter,
+                'duration': duration,
+                'is_strange': is_strange
+            }
+        )
 
     context = {
         'passcard': passcard,

@@ -6,21 +6,19 @@ from django.utils import timezone
 def storage_information_view(request):
 
     non_closed_visits = []
-    passcards = Visit.objects.all()
+    visits = Visit.objects.all()
     now = timezone.localtime()
-    count = 0
-    for passcard in passcards:
-        if passcard.leaved_at is None:
-            then = timezone.localtime(passcard.entered_at)
-            duration = now - then
+    for visit in visits:
+        if visit.leaved_at is None:
+            enter = timezone.localtime(visit.entered_at)
+            duration = now - enter
             non_closed_visits.append(
                 {
-                    'who_entered': passcard.passcard,
-                    'entered_at': then,
+                    'who_entered': visit.passcard,
+                    'entered_at': enter,
                     'duration': duration,
                 }
             )
-            count += 1
     context = {
         'non_closed_visits': non_closed_visits,
     }
