@@ -33,14 +33,14 @@ class Visit(models.Model):
 
     def get_duration(self):
         enter = timezone.localtime(self.entered_at)
-        if self.leaved_at is None:
-            now = timezone.localtime()
-            return (now - enter).total_seconds()
-        else:
+        if self.leaved_at:
             leave = timezone.localtime(self.leaved_at)
             return (leave - enter).total_seconds()
+        else:
+            now = timezone.localtime()
+            return (now - enter).total_seconds()
 
-    def get_is_strange(self):
+    def is_strange(self):
         return self.get_duration() > 3600
 
     def format_duration(self):
