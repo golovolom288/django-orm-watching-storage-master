@@ -20,6 +20,8 @@ class Visit(models.Model):
     passcard = models.ForeignKey(Passcard, on_delete=models.CASCADE)
     entered_at = models.DateTimeField()
     leaved_at = models.DateTimeField(null=True)
+    seconds_per_hour = 3600
+    seconds_per_minute = 60
 
     def __str__(self):
         return '{user} entered at {entered} {leaved}'.format(
@@ -41,12 +43,12 @@ class Visit(models.Model):
             return (now - enter).total_seconds()
 
     def is_strange(self):
-        return self.get_duration() > 3600
+        return self.get_duration() > self.seconds_per_hour
 
     def format_duration(self):
         duration = self.get_duration()
-        hours = int(duration // 3600)
-        minutes = int((duration % 3600) // 60)
+        hours = int(duration // self.seconds_per_hour)
+        minutes = int((duration % self.seconds_per_hour) // self.seconds_per_minute)
         print(duration)
         return f"{hours} ч. {minutes} мин."
 
