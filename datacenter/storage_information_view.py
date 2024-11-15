@@ -5,7 +5,7 @@ from django.utils import timezone
 
 def storage_information_view(request):
     non_closed_visits = []
-    visits = Visit.objects.all.leaved_at()
+    visits = Visit.objects.filter(leaved_at=None)
     now = timezone.localtime()
     for visit in visits:
         enter = timezone.localtime(visit.entered_at)
